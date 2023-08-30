@@ -24,13 +24,13 @@ Set up an rclone remote pointing to where your remote repository is stored - eit
 Now you can clone an existing repository:
 
 ```
-git clone rclone-sync::name-of-rclone-remote:path/too/repos.git
+git clone rclone-sync::name-of-rclone-remote:path/to/repository.git
 ```
 
 Or you can add an additional remote to an existing working branch:
 
 ```
-git remote add some-remote rclone-sync::name-of-rclone-remote:path/too/repos.git
+git remote add some-remote rclone-sync::name-of-rclone-remote:path/to/repository.git
 git push some-remote
 ```
 
@@ -39,7 +39,7 @@ Pulls from and pushes to the remote should require no different/additional comma
 If a git repository doesn't already exist at the remote location, pulls and pushes will fail.  The remote helper contains a built-in convenience script you can use to create a minimal bare Git repository and copy it to the remote location:
 
 ```
-git-remote-rclone-sync --init name-of-rclone-remote:path/too/repos.git "optional brief description"
+git-remote-rclone-sync --init name-of-rclone-remote:path/to/repository.git "optional brief description"
 ```
 
 
@@ -53,7 +53,7 @@ git-remote-rclone-sync --init name-of-rclone-remote:path/too/repos.git "optional
 
 **Repository format:**  This tool expects the git repository as exposed by rclone to be stored in the ordinary Git format, much as one might create on the local disk using `git init --bare`, rather than some other specialized format.  No attempt is made to re-pack, consolidate, compress or otherwise optimize the remote repository to reduce the number of remote objects, amount of storage consumed or number of access calls required.  (This is unlikely to be an issue for small repositories.)  A by-product of this is that if the remote repository is stored on a remote storage provider which lacks the concept of empty directories (such as Amazon S3), this tool will fail to recognize it as a git repository unless it contains at least one commit.  (`git-remote-rclone-sync --init` creates a single commit, containing a stub `README.md` file, before copying the repository to the remote end.)
 
-**Encrypted/custom rclone config:**  Encrypted rclone configuration is supported; git's [credential propmting/caching mechanism](https://git-scm.com/docs/gitcredentials) will be used to obtain the config file password.  You can specify a different `rclone.conf` for a particular working directory by writing it to `.git/rclone-sync/rclone.conf`.
+**Encrypted/custom rclone config:**  Encrypted rclone configuration is supported; git's [credential prompting/caching mechanism](https://git-scm.com/docs/gitcredentials) will be used to obtain the config file password.  You can specify a different `rclone.conf` for a particular working directory by writing it to `.git/rclone-sync/rclone.conf`.
 
 **Name:**  This script would have just been called `git-remote-rclone`, but this name is already taken on [Github](https://github.com/datalad/git-remote-rclone) and [PyPI](https://pypi.org/project/git-remote-rclone/) by another similar tool which uses a non-standard remote repository format.
 
