@@ -42,6 +42,8 @@ If a git repository doesn't already exist at the remote location, pulls and push
 git-remote-rclone-sync --init name-of-rclone-remote:path/to/repository.git "optional brief description"
 ```
 
+There are more options not listed above - run `git-remote-rclone-sync --help` or `git-remote-rclone-sync --longhelp` for more info.
+
 
 ### Notes and limitations
 
