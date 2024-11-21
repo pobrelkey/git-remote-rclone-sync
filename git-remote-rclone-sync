@@ -69,7 +69,7 @@ __OPTIONS__
 function longhelp() {
     usage
     echo
-    sed -e "s:SCHEME_NAME:${SCHEME_NAME}:g" <<'__LONGHELP_1__'
+    sed -e "s:SCHEME_NAME:${REMOTE_SCHEME}:g" <<'__LONGHELP_1__'
 Pull and push to Git remote repositories via rclone.
 
 In most cases a user shouldn't need to invoke this tool directly -
@@ -83,7 +83,7 @@ __LONGHELP_1__
     echo
     options
     echo
-    sed -e "s:SCHEME_NAME:${SCHEME_NAME}:g" <<'__LONGHELP_2__'
+    sed -e "s:SCHEME_NAME:${REMOTE_SCHEME}:g" <<'__LONGHELP_2__'
 Cloning a repository via rclone is straightforward:
 
     git clone SCHEME_NAME::name-of-rclone-remote:path/to/repository.git
@@ -98,27 +98,26 @@ already exists there.  The `--init` option to this tool can be used to
 conveniently create a minimal remote repository if none exists.
 __LONGHELP_2__
     echo
-    if [[ "${SCHEME_NAME}" == rclone-sync ]]
+    if [[ "${REMOTE_SCHEME%mount}" != "${REMOTE_SCHEME}" ]] 
     then
         cat <<'__LONGHELP_3A__'
-This tool keeps a full copy of the remote repository in your working copy's
-`.git` directory, which is kept in sync with the remote.  You can also invoke
-this tool as `git-remote-rclone-mount` (using repository URLs starting with
-`rclone-mount::`) to access the remote via a FUSE mount instead, at a cost of
-more intensive network access and reduced reliability/performance.
-__LONGHELP_3A__
-    elif [[ "${SCHEME_NAME}" == rclone-mount ]]
-    then
-        cat <<'__LONGHELP_3B__'
 This tool uses `rclone mount` to access the remote repository via FUSE.
 You can also invoke this tool as `git-remote-rclone-sync` (using repository
 URLs starting with `rclone-sync::` to instead use a full local copy of the
 remote repository which is kept in sync - this uses more local disk space but
 is typically more performant and reliable.
+__LONGHELP_3A__
+    else
+        cat <<'__LONGHELP_3B__'
+This tool keeps a full copy of the remote repository in your working copy's
+`.git` directory, which is kept in sync with the remote.  You can also invoke
+this tool as `git-remote-rclone-mount` (using repository URLs starting with
+`rclone-mount::`) to access the remote via a FUSE mount instead, at a cost of
+more intensive network access and reduced reliability/performance.
 __LONGHELP_3B__
     fi
     echo
-    sed -e "s:SCHEME_NAME:${SCHEME_NAME}:g" <<'__LONGHELP_4__'
+    sed -e "s:SCHEME_NAME:${REMOTE_SCHEME}:g" <<'__LONGHELP_4__'
 A custom rclone config file can be stored under your working copy's `.git`
 directory, at `.git/SCHEME_NAME/rclone.conf` - this will supersede the
 user/system rclone configuration if present.
